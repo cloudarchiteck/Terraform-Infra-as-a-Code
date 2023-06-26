@@ -1,0 +1,138 @@
+# Terraform IAAC & concepts of DRY.
+
+In the previous repository created VPC resources by terraform. Below are the terraform concepts.
+
+# Variables
+# Data Types
+# Conditions
+# Loops
+# Functions
+
+Variable  "Name of Variable" {
+    type = String/Bool/Integer/Float( type is not required in terraform . It has intellegence to identify data type.)
+    default = "Value"
+    descriptionm = " describe the variable purpose"(# not necessary but for better standards have to use)
+}
+
+To demonstrate the concepts of variables - creating security groups.
+
+Frst we create VPC
+
+Security groups
+
+variables -
+
+if you see tags is a map.. we can give map or string... map will start with flower braces.
+
+ex : 
+variable "tags" {
+    type = map(string)
+    default ={
+        Name = "Name your project etc."
+        Terraform ="true"
+        Environment = "depends on your env like Dev,prod etc."
+
+    }
+
+}
+
+
+# in terraform variable data types as - number,string,bool,list,map
+
+Count and Count index
+------------------------------------------
+we have a task of creating 3 ec2 instances
+1. Web Server
+2. API Server
+3. DB Server
+
+
+Index always start from "0".
+
+ex : count 3  follow as 0,1&2
+
+Conditions - simple expression
+-----------------------------------------
+if(day == Sunday){
+    print "Holiday"
+}
+    else{
+        Print "Off to work"
+    }
+
+Terraform Conditionsstructure : condition ? true_val : false_val
+
+If condition is true then the result is true_val. If condition is false then the result is false_val.
+
+A common use of conditional expressions is to define defaults to replace invalid values:
+
+here we are going to use the simple condition :
+
+If env is PROD create - t3.large instance , if not prod create t2.micro.
+
+instead of Boo( true /false) we can use string by using Environment refer variable.tf - line# 56 -58 is Bool concept 
+& line#
+
+Functions
+------------------------------------
+It can do a unit of work whenever you ask.
+
+Follow varioius functions in terraform registry .
+
+Ex : max(5,4,3,7,2)
+
+Output - 7
+
+Ex , : max, join, split,file,Merge(it would be used frequently),lookup
+
+File :  while creating EC2 instance 
+
+* attach public key to the Server
+* you have a private key in your laptop
+* then you will use private key to login.
+
+ssh-keygen -f terraform
+
+refer to the video -Linux free course - techworld with shiva
+
+merge function :
+
+common tags :
+
+default = {
+    Name = "your wish"
+    terraform="true"
+    Environment="Dev"
+}
+
+by using merge function we can give different names to security groups.
+
+merge(var.tags,{Name ="your wish-rds-sg"})
+
+
+Loops
+----------------------------
+for(int i=0; i<=10 ; i++)
+
+In terraform also we have loops...
+
+lets take task Below
+
+for each loop :  I want to create 3 public subnet - High availability.
+
+have to create 2 availability zones
+
+Mumbai : north-Mumbai , south-Mumbai
+
+
+*****
+
+while building the concept faced an issue in tags where my IDE (VS code) taken name is all small leters but it should be in proper "Name".
+hence initially experienced an issue.
+
+*****
+count concept changed insead of hard coding while incrementing number of servers to be created.
+
+instead of Count =3... altered with the concept -length(var.instance_names)
+
+
